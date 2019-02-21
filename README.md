@@ -1,24 +1,28 @@
 # README
+A tool that takes an arbitrarily-long URL and will shorten it for the user. Subsequent users can then give the short URL back to our tool and be redirected to the original URL. We'll also track clickthroughs, since these can be really helpful for business analytics.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+Features:
 
-* Ruby version
+* launchy gem to pop open the original URL in a browser
 
-* System dependencies
+* Database migrations
 
-* Configuration
+* Associations (:has_many, :belongs_to, :has_many :through)
 
-* Database creation
+* Validations
 
-* Database initialization
 
-* How to run the test suite
+To Run:
 
-* Services (job queues, cache servers, search engines, etc.)
+```sh
+bundle install
+```
 
-* Deployment instructions
+```sh
+rails db:migrate
+```
 
-* ...
+```sh
+rails runner bin/cli
+```

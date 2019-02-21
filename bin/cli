@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require 'launchy'
+
+puts "Login in via email: "
+user_email = gets.chomp
+user = User.find_by(email: user_email)
+if user.nil?
+	puts "Sorry, you don't have access - bye!"
+else
+	puts "\nSuccessfully logged in!"
+
+	puts "What do you want to do? Pick the following options:"
+	puts "0. Create shortened URL"
+	puts "1. Visit shortened URL"
+	user_option = gets.chomp
+
+	case user_option
+	when "0"
+		puts "Type in your long url"
+		long_url = gets.chomp
+		# user = User.create(email: user_email)
+		ShortenedUrl.create!(user, long_url)
+		short_url = ShortenedUrl.find_by(long_url: long_url).short_url
+		puts "Short url is: #{short_url}"
+		puts "Goodbye!"
+	when "1"
+		puts "Type in the shortened URL"
+		short_url = gets.chomp
+		url_object = ShortenedUrl.find_by(short_url: short_url)
+		if url_object.nil?
+			puts "URL not found"
+		else
+			long_url = url_object.long_url
+			Visitor.record_visit!(user, url_object)
+			puts "launching #{long_url} in broweser...."
+			puts "Goodbye!"
+			Launchy.open long_url
+		end
+	end
+end
